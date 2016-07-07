@@ -86,7 +86,8 @@ public:
 	void RenderStereoTargets();
 	void RenderDistortion();
 	void RenderScene( vr::Hmd_Eye nEye );
-
+	
+	//INVESTIGATE
 	Matrix4 GetHMDMatrixProjectionEye( vr::Hmd_Eye nEye );
 	Matrix4 GetHMDMatrixPoseEye( vr::Hmd_Eye nEye );
 	Matrix4 GetCurrentViewProjectionMatrix( vr::Hmd_Eye nEye );
@@ -656,7 +657,7 @@ void CMainApplication::ProcessVREvent( const vr::VREvent_t & event )
 	{
 	case vr::VREvent_TrackedDeviceActivated:
 		{
-			SetupRenderModelForTrackedDevice( event.trackedDeviceIndex );
+			SetupRenderModelForTrackedDevice( event.trackedDeviceIndex ); //INVESTIGATE
 			dprintf( "Device %u attached. Setting up render model.\n", event.trackedDeviceIndex );
 		}
 		break;
@@ -722,6 +723,7 @@ void CMainApplication::RenderFrame()
 	}
 
 	// Spew out the controller and pose count whenever they change.
+	//INVESTIGATE
 	if ( m_iTrackedControllerCount != m_iTrackedControllerCount_Last || m_iValidPoseCount != m_iValidPoseCount_Last )
 	{
 		m_iValidPoseCount_Last = m_iValidPoseCount;
@@ -729,7 +731,7 @@ void CMainApplication::RenderFrame()
 		
 		dprintf( "PoseCount:%d(%s) Controllers:%d\n", m_iValidPoseCount, m_strPoseClasses.c_str(), m_iTrackedControllerCount );
 	}
-
+	//INVESTIGATE
 	UpdateHMDMatrixPose();
 }
 
@@ -1134,7 +1136,8 @@ void CMainApplication::DrawControllers()
 
 	m_uiControllerVertcount = 0;
 	m_iTrackedControllerCount = 0;
-
+	
+	//INVESTIGATE
 	for ( vr::TrackedDeviceIndex_t unTrackedDevice = vr::k_unTrackedDeviceIndex_Hmd + 1; unTrackedDevice < vr::k_unMaxTrackedDeviceCount; ++unTrackedDevice )
 	{
 		if ( !m_pHMD->IsTrackedDeviceConnected( unTrackedDevice ) )
@@ -1228,6 +1231,7 @@ void CMainApplication::DrawControllers()
 //-----------------------------------------------------------------------------
 void CMainApplication::SetupCameras()
 {
+	//INVESTIGATE
 	m_mat4ProjectionLeft = GetHMDMatrixProjectionEye( vr::Eye_Left );
 	m_mat4ProjectionRight = GetHMDMatrixProjectionEye( vr::Eye_Right );
 	m_mat4eyePosLeft = GetHMDMatrixPoseEye( vr::Eye_Left );
@@ -1486,6 +1490,7 @@ void CMainApplication::RenderScene( vr::Hmd_Eye nEye )
 	if( m_bShowCubes )
 	{
 		glUseProgram( m_unSceneProgramID );
+		//INVESTIGATE
 		glUniformMatrix4fv( m_nSceneMatrixLocation, 1, GL_FALSE, GetCurrentViewProjectionMatrix( nEye ).get() );
 		glBindVertexArray( m_unSceneVAO );
 		glBindTexture( GL_TEXTURE_2D, m_iTexture );
@@ -1512,6 +1517,8 @@ void CMainApplication::RenderScene( vr::Hmd_Eye nEye )
 	{
 		if( !m_rTrackedDeviceToRenderModel[ unTrackedDevice ] || !m_rbShowTrackedDevice[ unTrackedDevice ] )
 			continue;
+		
+		//INVESTIGATE
 
 		const vr::TrackedDevicePose_t & pose = m_rTrackedDevicePose[ unTrackedDevice ];
 		if( !pose.bPoseIsValid )
@@ -1585,6 +1592,7 @@ Matrix4 CMainApplication::GetHMDMatrixProjectionEye( vr::Hmd_Eye nEye )
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
+//INVESTIGATE
 Matrix4 CMainApplication::GetHMDMatrixPoseEye( vr::Hmd_Eye nEye )
 {
 	if ( !m_pHMD )
@@ -1605,6 +1613,7 @@ Matrix4 CMainApplication::GetHMDMatrixPoseEye( vr::Hmd_Eye nEye )
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
+//INVESTIGATE
 Matrix4 CMainApplication::GetCurrentViewProjectionMatrix( vr::Hmd_Eye nEye )
 {
 	Matrix4 matMVP;
@@ -1624,6 +1633,7 @@ Matrix4 CMainApplication::GetCurrentViewProjectionMatrix( vr::Hmd_Eye nEye )
 //-----------------------------------------------------------------------------
 // Purpose:
 //-----------------------------------------------------------------------------
+//INVESTIGATE
 void CMainApplication::UpdateHMDMatrixPose()
 {
 	if ( !m_pHMD )
@@ -1635,6 +1645,7 @@ void CMainApplication::UpdateHMDMatrixPose()
 	m_strPoseClasses = "";
 	for ( int nDevice = 0; nDevice < vr::k_unMaxTrackedDeviceCount; ++nDevice )
 	{
+		//INVESTIGATE
 		if ( m_rTrackedDevicePose[nDevice].bPoseIsValid )
 		{
 			m_iValidPoseCount++;
